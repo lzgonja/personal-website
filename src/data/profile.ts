@@ -46,6 +46,7 @@ export const education = [
       "Multivariable Calculus",
       "Linear Algebra",
       "Probability and Statistics",
+      "Cryptography",
     ],
   },
 ];
@@ -62,23 +63,42 @@ export const experience = [
   {
     role: "Teaching Assistant",
     organization: "McMaster University",
-    dates: "January–April 2026",
     location: "Hamilton, ON",
+    dates: "January – April 2026",
     details: [
-      "Led weekly tutorials for 30–50 students in COMPSCI 2DB3 (Databases), teaching SQL, relational schema design, normalization, and query optimization.",
-      "Evaluated 100+ assignments and supported students through office hours and online platforms.",
+      [
+        { text: "Led weekly tutorials for " },
+        { text: "30–50 students", emphasis: true },
+        { text: " in COMPSCI 2DB3 (Databases), teaching SQL, relational schema design, normalization, and query optimization" },
+      ],
+      [
+        { text: "Evaluated " },
+        { text: "400+ assignments", emphasis: true },
+        { text: " and supported students through office hours" },
+      ],
     ],
   },
   {
     role: "Data Analyst",
     organization: "Visual Neuroscience Lab",
-    dates: "May–August 2025",
     location: "Hamilton, ON",
+    dates: "May – August 2025",
     details: [
-      "Optimized Fréchet distance computations across protein-expression trajectories, distributing workloads across six CPU workers and achieving a 75% runtime reduction through parallelization and batching.",
-      "Restored functionality of the bMIND Bayesian deconvolution model by addressing covariance matrix incompatibilities through modified prior inputs and parameter tuning, enabling cell-type-specific gene expression estimation.",
-      "Validated bMIND gene expression estimates using DABEST bootstrap analysis, achieving a near-zero median difference between reconstructed pseudobulk and observed bulk data.",
-      "Developed a relational SQLite database to resolve inefficient access to Allen Institute neuroscience datasets, streamlining data retrieval and creating tutorials for non-technical researchers.",
+      [
+        { text: "Parallelized Fréchet distance computations across six CPU workers using batching, achieving a " },
+        { text: "75% runtime reduction", emphasis: true },
+      ],
+      [
+        { text: "Debugged the bMIND Bayesian deconvolution model by resolving covariance matrix incompatibilities through prior adjustments and parameter tuning" },
+      ],
+      [
+        { text: "Validated bMIND gene expression estimates using DABEST bootstrap analysis, achieving a " },
+        { text: "near-zero median difference", emphasis: true },
+        { text: " between reconstructed and observed data" },
+      ],
+      [
+        { text: "Built a relational SQLite database for Allen Institute neuroscience datasets, improving data access and creating tutorials for researchers" },
+      ],
     ],
   },
 ];
@@ -87,15 +107,15 @@ export const publications = [
   {
     type: "University research feature",
     title: "Advancing Computational Methods for Brain Transcriptomics and Data Analysis",
-    venue: "McMaster University Department of Mathematics and Statistics",
-    date: "August 2025",
+    venue: "McMaster University",
+    date: "2025",
     href: "https://math.mcmaster.ca/undergraduate/useful-links/stewart-fund-award-winners/",
   },
   {
     type: "Journal publication",
     title: "Treatment of Alzheimer's Disease using Axitinib",
-    venue: "McMaster Brain Research Society Journal, Volume 4",
-    date: "April 2024",
+    venue: "McMaster Brain Research Society Journal",
+    date: "2024",
     href: "https://journals.mcmaster.ca/macbrs/issue/view/215",
   },
 ];

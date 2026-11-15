@@ -58,7 +58,7 @@
 }
 
 .forest-projects .explorer-card-parallax { grid-column: 1 / span 7; min-height: 370px; margin-top: 16px; transform: rotate(-0.3deg); }
-.forest-projects .explorer-card-bandits { grid-column: 8 / span 5; min-height: 560px; margin-top: 54px; transform: rotate(0.45deg); }
+.forest-projects .explorer-card-bandits { grid-column: 8 / span 5; min-height: 500px; margin-top: 16px; transform: rotate(0.45deg); }
 .forest-projects .explorer-card-ekgram { grid-column: 1 / span 5; min-height: 410px; margin-top: -8px; transform: rotate(0.45deg); }
 .forest-projects .explorer-card-shortest-path-algorithms { grid-column: 6 / span 7; min-height: 440px; margin-top: 24px; transform: rotate(-0.25deg); }
 .forest-projects .explorer-card-virtual-memory-simulator { grid-column: 1 / span 6; min-height: 400px; margin-top: 8px; transform: rotate(-0.45deg); }
@@ -148,7 +148,7 @@
   line-height: 1.35;
 }
 .forest-projects .explorer-card-bandits .explorer-card-face {
-  padding: clamp(28px, 2.7vw, 36px);
+  padding: clamp(22px, 2.35vw, 30px);
   border-color: rgb(178 208 170 / 36%);
   border-radius: 2px;
   background:
@@ -156,6 +156,93 @@
     #12261c;
   box-shadow: 0 26px 62px rgb(2 10 6 / 36%), inset 0 1px rgb(255 255 255 / 4%);
 }
+.forest-projects .explorer-card-bandits .bandit-card-front {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(16px, 1.8vw, 22px);
+  align-content: start;
+}
+.forest-projects .bandit-card-copy { min-width: 0; }
+.forest-projects .explorer-card-bandits .bandit-card-front h3 {
+  max-width: none;
+  margin: 0;
+  font-size: clamp(1.8rem, 2.8vw, 2.85rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+.forest-projects .explorer-card-bandits .bandit-card-front p {
+  max-width: 54ch;
+  margin: 14px 0 0;
+  color: #becbbe;
+  font-family: var(--font-projects-sans), sans-serif;
+  font-size: clamp(0.78rem, 0.9vw, 0.88rem);
+  line-height: 1.5;
+}
+.forest-projects .explorer-card-bandits .bandit-card-front ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.forest-projects .explorer-card-bandits .bandit-card-front li {
+  padding: 3px 6px;
+  border: 1px solid rgb(178 208 170 / 34%);
+  border-radius: 2px;
+  color: #c5d7bf;
+  font: 500 0.66rem/1.35 var(--font-projects-mono), monospace;
+}
+.forest-projects .explorer-card-bandits .bandit-card-back h3 {
+  max-width: 18ch;
+  margin: 0;
+  color: #edf4e7;
+  font-size: clamp(1.55rem, 2.35vw, 2.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.forest-projects .explorer-card-bandits .bandit-card-back > p {
+  margin: 18px 0 0;
+  color: #bdcbbb;
+  font-family: var(--font-projects-sans), sans-serif;
+  font-size: clamp(0.76rem, 0.86vw, 0.86rem);
+  line-height: 1.5;
+}
+.forest-projects .bandit-finding {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgb(178 208 170 / 20%);
+}
+.forest-projects .bandit-finding > strong {
+  color: #a9c99e;
+  font: 600 0.68rem var(--font-projects-mono), monospace;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+.forest-projects .bandit-finding > p {
+  margin: 7px 0 0;
+  color: #d7e1d3;
+  font-family: var(--font-projects-sans), sans-serif;
+  font-size: clamp(0.76rem, 0.86vw, 0.86rem);
+  line-height: 1.48;
+}
+.forest-projects .bandit-finding > span {
+  display: block;
+  margin-top: 7px;
+  color: #8fa492;
+  font: 500 0.64rem var(--font-projects-mono), monospace;
+}
+.forest-projects .bandit-card-back .explorer-open-button { margin-top: auto; }
+.forest-projects .bandit-detail-overview { grid-column: 1 / 13; max-width: 950px; }
+.forest-projects .bandit-detail-overview > p {
+  max-width: 72ch;
+  color: var(--forest-muted);
+  font-family: var(--font-projects-sans), sans-serif;
+  font-size: clamp(1rem, 1.45vw, 1.2rem);
+  line-height: 1.6;
+}
+.forest-projects .bandit-detail-pipeline { grid-column: 1 / 9; }
 .forest-projects .explorer-card-parallax .parallax-card-back {
   padding: clamp(26px, 2.8vw, 38px);
   border-color: rgb(178 208 170 / 36%);
@@ -269,8 +356,6 @@
 .forest-projects .explorer-card-parallax .explorer-card-highlights li::before { background: #315f4b; }
 .forest-projects .explorer-card-parallax .explorer-open-button { border-color: #315f4b !important; color: #244d3b !important; }
 .forest-projects .explorer-card-parallax .explorer-open-button:hover { background: #315f4b !important; color: #eff5e8 !important; }
-.forest-projects .explorer-card-bandits h3 { max-width: 15ch; margin-top: 0; font-size: clamp(2rem, 3.3vw, 3.45rem); line-height: 0.96; letter-spacing: -0.045em; }
-.forest-projects .explorer-card-bandits .explorer-card-front > p { max-width: 43ch; margin-top: 14px; color: #b9c9ba; line-height: 1.55; }
 .forest-projects .explorer-card-parallax:hover .explorer-card-face,
 .forest-projects .explorer-card-bandits:hover .explorer-card-face { box-shadow: 0 30px 72px rgb(2 10 6 / 40%), inset 0 1px rgb(255 255 255 / 5%); }
 
@@ -314,16 +399,31 @@
 .forest-projects .explorer-preview-plot::before { position: absolute; z-index: 1; inset: 8px; border: 1px solid rgb(185 209 169 / 16%); content: ""; pointer-events: none; }
 .forest-projects .explorer-preview-plot img { position: absolute; inset: -6% -8%; display: block; width: 116%; height: 112%; border: 0; object-fit: contain; object-position: center; opacity: 0.94; filter: invert(0.9) sepia(0.18) hue-rotate(78deg) saturate(0.72) brightness(0.8) contrast(1.12); }
 
-.forest-projects .explorer-preview-bandit { display: grid; grid-template-columns: 1fr !important; grid-template-rows: auto 1fr; gap: 3px; min-height: 124px; margin-top: 18px; padding: 11px 14px 8px; border-color: rgb(178 208 170 / 24%); box-shadow: inset 0 0 0 1px rgb(193 219 178 / 5%), 0 9px 22px rgb(0 0 0 / 16%); }
-.forest-projects .preview-chart-heading { display: flex; justify-content: space-between; gap: 12px; color: #c8d9bd; font: 500 0.55rem var(--font-projects-mono), monospace; letter-spacing: 0.03em; }
-.forest-projects .preview-chart-heading b { color: #829a84; font-weight: 500; }
-.forest-projects .explorer-preview-bandit svg { width: 100%; height: 100%; min-height: 76px; }
-.forest-projects .explorer-preview-bandit path { fill: none; }
-.forest-projects .explorer-preview-bandit .preview-axis { stroke: rgb(220 234 208 / 38%); stroke-width: 1; }
-.forest-projects .explorer-preview-bandit .preview-grid { stroke: rgb(178 208 170 / 10%); stroke-width: 1; }
-.forest-projects .explorer-preview-bandit .preview-bandit-etc { stroke: #a9c99e; stroke-width: 2.4; }
-.forest-projects .explorer-preview-bandit .preview-bandit-ucb { stroke: #b8a7c7; stroke-width: 2.4; }
-.forest-projects .explorer-preview-bandit text { fill: #8ca38e; font: 500 7px var(--font-projects-mono), monospace; }
+.forest-projects .explorer-preview-bandit.bandit-concept {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 2.25;
+  place-items: center;
+  padding: 8px;
+  border: 1px solid rgb(178 208 170 / 25%);
+  background: #0b1c14;
+  box-shadow: inset 0 0 0 1px rgb(193 219 178 / 4%);
+}
+.forest-projects .bandit-concept svg { display: block; width: 100%; height: 100%; }
+.forest-projects .bandit-concept-grid { fill: none; stroke: rgb(178 208 170 / 8%); stroke-width: 1; }
+.forest-projects .bandit-concept-link { fill: none; stroke: rgb(178 208 170 / 24%); stroke-width: 1.5; }
+.forest-projects .bandit-arm-concept rect { fill: rgb(75 111 83 / 13%); stroke: #6f8d74; stroke-width: 1.5; }
+.forest-projects .bandit-arm-concept path { fill: none; stroke: #718d75; stroke-width: 2; stroke-linecap: square; }
+.forest-projects .bandit-arm-concept circle { fill: #10271b; stroke: #718d75; stroke-width: 1.5; }
+.forest-projects .bandit-arm-concept text { fill: #718d75; font: 500 9px var(--font-projects-mono), monospace; text-anchor: middle; }
+.forest-projects .bandit-arm-concept.is-selected rect { fill: rgb(169 201 158 / 12%); stroke: #a9c99e; }
+.forest-projects .bandit-arm-concept.is-selected path,
+.forest-projects .bandit-arm-concept.is-selected circle { stroke: #b7d6ab; }
+.forest-projects .bandit-arm-concept.is-selected circle { fill: #90b388; filter: drop-shadow(0 0 5px rgb(169 201 158 / 45%)); }
+.forest-projects .bandit-arm-concept.is-selected text { fill: #b7d6ab; }
+.forest-projects .bandit-selection-marker { fill: #a9c99e; opacity: 0.8; }
 
 .forest-projects .explorer-preview-ekgram,
 .forest-projects .explorer-preview-graph { display: grid !important; grid-template-columns: 1fr !important; gap: 4px !important; padding: 12px 16px !important; }
@@ -373,7 +473,9 @@
     margin-top: 0;
     transform: none;
   }
-  .forest-projects .explorer-card-bandits { min-height: 510px; }
+  .forest-projects .explorer-card-bandits { min-height: 530px; }
+  .forest-projects .explorer-card-bandits .bandit-card-front { grid-template-columns: 1fr; gap: 20px; align-content: start; }
+  .forest-projects .explorer-card-bandits .bandit-concept { width: min(100%, 350px); aspect-ratio: 1.55; justify-self: end; }
   .forest-projects .explorer-card-parallax { min-height: 535px; }
   .forest-projects .explorer-card-parallax .parallax-card-front { grid-template-columns: 1fr; gap: 22px; align-content: start; }
   .forest-projects .explorer-card-parallax .parallax-card-front p { max-width: 48ch; }
@@ -394,8 +496,10 @@
   .forest-projects .explorer-card-virtual-memory-simulator,
   .forest-projects .explorer-card-polyglot { grid-column: auto; min-height: 450px; }
   .forest-projects .explorer-card-parallax { min-height: 585px; }
-  .forest-projects .explorer-card-bandits { min-height: 520px; }
-  .forest-projects .explorer-preview-bandit { grid-template-columns: 0.8fr auto 1fr; }
+  .forest-projects .explorer-card-bandits { min-height: 600px; }
+  .forest-projects .explorer-card-bandits .bandit-card-front { padding: 26px 24px; }
+  .forest-projects .explorer-card-bandits .bandit-concept { width: 100%; aspect-ratio: 1.45; }
+  .forest-projects .bandit-card-back .explorer-open-button { margin-top: 18px; }
   .forest-projects .explorer-card-parallax .parallax-card-front { gap: 18px; padding: 26px 24px; }
   .forest-projects .explorer-card-parallax .parallax-card-front h3 { font-size: clamp(2.6rem, 14vw, 3.5rem); }
   .forest-projects .explorer-card-parallax .parallax-card-front ul { width: 100%; gap: 6px; }

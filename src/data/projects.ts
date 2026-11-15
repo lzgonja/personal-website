@@ -50,9 +50,9 @@ export const projects: Project[] = [
     field: "Reinforcement learning",
     category: "Machine Learning",
     subtitle: "Learning under uncertainty",
-    summary: "Studying the tension between exploring unfamiliar choices and exploiting what a learning agent already believes to be useful.",
-    topics: ["Python", "ETC", "UCB", "Regret analysis"],
-    highlights: ["Explore-Then-Commit and UCB", "Seeded cumulative-regret comparison"],
+    summary: "Implemented and compared Explore-Then-Commit (ETC) and Upper Confidence Bound (UCB) algorithms to investigate the trade-off between exploration and exploitation in sequential decision-making.",
+    topics: ["Python", "NumPy", "Matplotlib"],
+    highlights: ["Explore-Then-Commit and Upper Confidence Bound", "Cumulative-regret comparison"],
     status: "project",
   },
   {

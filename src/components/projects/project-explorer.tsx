@@ -5,8 +5,6 @@ import Image from "next/image";
 
 import type { Project } from "@/data/projects";
 
-import { BanditDemo } from "./bandit-demo";
-import { simulateBandit } from "./bandit-simulation";
 import { TrajectoryVisualization } from "./trajectory-visualization";
 
 const projectOrder = [
@@ -29,21 +27,14 @@ const parallaxDescription =
   "A monocular visual odometry system that estimates a vehicle's trajectory from a single camera and improves it with temporal rotation correction.";
 
 const banditDescription =
-  "A working comparison of Explore-Then-Commit and Upper Confidence Bound on the same seeded reward environment.";
+  "Implemented and compared Explore-Then-Commit (ETC) and Upper Confidence Bound (UCB) algorithms to investigate the trade-off between exploration and exploitation in sequential decision-making.";
 
-const previewBanditResults = {
-  ETC: simulateBandit("ETC").regret,
-  UCB: simulateBandit("UCB").regret,
-};
-
-function banditPreviewPath(values: number[]) {
-  const maximum = Math.max(...previewBanditResults.ETC, ...previewBanditResults.UCB);
-  return values.map((value, index) => {
-    const x = 25 + (index / (values.length - 1)) * 250;
-    const y = 78 - (value / maximum) * 58;
-    return `${index === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
-  }).join(" ");
-}
+const banditSteps = [
+  ["Step 1 — Model the decision problem", "Simulate multiple arms with different reward distributions to represent choices with uncertain outcomes."],
+  ["Step 2 — ETC", "Explore each arm for a fixed number of rounds, then commit to the arm with the highest estimated reward."],
+  ["Step 3 — UCB", "Select arms using empirical rewards and confidence bounds to balance exploration and exploitation."],
+  ["Step 4 — Evaluate regret", "Compare how much expected reward each algorithm loses relative to consistently selecting the optimal arm."],
+] as const;
 
 function ProjectPreview({ project }: { project: Project }) {
   if (project.slug === "parallax") {
@@ -64,14 +55,21 @@ function ProjectPreview({ project }: { project: Project }) {
 
   if (project.slug === "multi-armed-bandits") {
     return (
-      <div className="explorer-preview explorer-preview-bandit" aria-hidden="true">
-        <div className="preview-chart-heading"><span>cumulative expected regret</span><b>120 rounds · seed 2026</b></div>
-        <svg viewBox="0 0 300 92">
-          <path className="preview-axis" d="M25 14V78H282" />
-          <path className="preview-grid" d="M25 30H282M25 46H282M25 62H282M89 14V78M153 14V78M217 14V78" />
-          <path className="preview-bandit-etc" d={banditPreviewPath(previewBanditResults.ETC)} />
-          <path className="preview-bandit-ucb" d={banditPreviewPath(previewBanditResults.UCB)} />
-          <text x="31" y="25">ETC</text><text x="31" y="38">UCB</text>
+      <div className="explorer-preview explorer-preview-bandit bandit-concept" aria-hidden="true">
+        <svg viewBox="20 20 260 190">
+          <path className="bandit-concept-grid" d="M20 42H280M20 94H280M20 146H280M74 24V192M150 24V192M226 24V192" />
+          <path className="bandit-concept-link" d="M38 181H262" />
+          {[62, 150, 238].map((x, index) => (
+            <g className={index === 1 ? "bandit-arm-concept is-selected" : "bandit-arm-concept"} key={x}>
+              <rect height="78" width="46" x={x - 23} y="91" />
+              <path d={`M${x} 91V55l18-18`} />
+              <circle cx={x + 22} cy="33" r="7" />
+              <circle cx={x} cy="113" r="5" />
+              <path d={`M${x - 14} 143H${x + 14}`} />
+              <text x={x} y="205">ARM 0{index + 1}</text>
+            </g>
+          ))}
+          <path className="bandit-selection-marker" d="M150 74l-7-11h14Z" />
         </svg>
       </div>
     );
@@ -120,6 +118,71 @@ function ProjectPreview({ project }: { project: Project }) {
   }
 
   return null;
+}
+
+function BanditCardFront({ isFlipped, project }: { isFlipped: boolean; project: Project }) {
+  return (
+    <div aria-hidden={isFlipped} className="explorer-card-face explorer-card-front bandit-card-front">
+      <div className="bandit-card-copy">
+        <h3>Multi-Armed Bandits</h3>
+        <p>{banditDescription}</p>
+        <ul aria-label={`${project.title} technologies`}>
+          {project.topics.map((topic) => <li key={topic}>{topic}</li>)}
+        </ul>
+      </div>
+      <ProjectPreview project={project} />
+    </div>
+  );
+}
+
+function BanditCardBack({
+  isFlipped,
+  onExplore,
+}: {
+  isFlipped: boolean;
+  onExplore: (trigger: HTMLButtonElement) => void;
+}) {
+  return (
+    <div aria-hidden={!isFlipped} className="explorer-card-face explorer-card-back bandit-card-back">
+      <h3>How do the algorithms compare?</h3>
+      <p>ETC explores each option before selecting one to exploit, while UCB dynamically balances exploitation and exploration using a confidence interval for each action&apos;s estimated reward.</p>
+      <div className="bandit-finding">
+        <strong>Key finding</strong>
+        <p>UCB generally accumulated less regret than ETC at longer decision horizons in the evaluated experiment.</p>
+        <span>Evaluated over 500–20,000 rounds.</span>
+      </div>
+      <button
+        className="explorer-open-button"
+        onClick={(event) => { event.stopPropagation(); onExplore(event.currentTarget); }}
+        tabIndex={isFlipped ? 0 : -1}
+        type="button"
+      >
+        Explore project <span aria-hidden="true">↗</span>
+      </button>
+    </div>
+  );
+}
+
+function BanditProjectDetail() {
+  return (
+    <div className="explorer-detail-body bandit-detail">
+      <header className="explorer-detail-intro bandit-detail-overview">
+        <h2 id="project-dialog-title">Multi-Armed Bandits</h2>
+        <p>{banditDescription}</p>
+      </header>
+      <section className="explorer-detail-section bandit-detail-pipeline" aria-labelledby="bandit-method-title">
+        <h3 id="bandit-method-title">How it works</h3>
+        <ol className="forest-pipeline-steps">
+          {banditSteps.map(([title, text]) => (
+            <li key={title}>
+              <strong>{title}</strong>
+              <p>{text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+  );
 }
 
 function ParallaxCardFront({ isFlipped, project }: { isFlipped: boolean; project: Project }) {
@@ -195,47 +258,28 @@ function ParallaxProjectDetail({ onEnlargePlot }: { onEnlargePlot: () => void })
 }
 
 function ProjectDetail({ project }: { project: Project }) {
-  const displayTitle = project.slug === "multi-armed-bandits"
-    ? "Sequential Decision-Making with Multi-Armed Bandits"
-    : project.title;
-  const description = project.slug === "multi-armed-bandits" ? banditDescription : project.summary;
-
   return (
     <div className="explorer-detail-body">
       <header className="explorer-detail-intro">
-        <h2 id="project-dialog-title">{displayTitle}</h2>
+        <h2 id="project-dialog-title">{project.title}</h2>
         <p>{project.subtitle}</p>
       </header>
 
       <div className="explorer-detail-summary">
-        <p>{description}</p>
+        <p>{project.summary}</p>
         <ul className="forest-tag-list" aria-label={`${project.title} technologies and topics`}>
           {project.topics.map((topic) => <li key={topic}>{topic}</li>)}
         </ul>
       </div>
 
-      {project.slug === "multi-armed-bandits" ? (
-        <>
-          <section className="explorer-detail-section" aria-labelledby="bandit-method-title">
-            <h3 id="bandit-method-title">Comparison method</h3>
-            <ul className="explorer-highlight-list">
-              <li><strong>ETC</strong><span>Explores every arm for a fixed number of rounds, then commits to the highest estimated reward.</span></li>
-              <li><strong>UCB</strong><span>Balances estimated reward with an uncertainty bonus throughout the run.</span></li>
-              <li><strong>Regret</strong><span>Tracks expected reward lost when the selected arm is not the environment&apos;s best arm.</span></li>
-            </ul>
-          </section>
-          <BanditDemo />
-        </>
-      ) : (
-        <section className="explorer-detail-section" aria-labelledby="technical-focus-title">
-          <h3 id="technical-focus-title">Technical focus</h3>
-          <ProjectPreview project={project} />
-          <ul className="explorer-highlight-list">
-            {project.highlights.map((highlight) => <li key={highlight}><span>{highlight}</span></li>)}
-          </ul>
-          <p className="explorer-detail-note">Additional implementation details and verified project outputs can be added here as they become available.</p>
-        </section>
-      )}
+      <section className="explorer-detail-section" aria-labelledby="technical-focus-title">
+        <h3 id="technical-focus-title">Technical focus</h3>
+        <ProjectPreview project={project} />
+        <ul className="explorer-highlight-list">
+          {project.highlights.map((highlight) => <li key={highlight}><span>{highlight}</span></li>)}
+        </ul>
+        <p className="explorer-detail-note">Additional implementation details and verified project outputs can be added here as they become available.</p>
+      </section>
     </div>
   );
 }
@@ -327,6 +371,8 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
               <div className={`explorer-card-inner ${isFlipped ? "is-flipped" : ""}`}>
                 {project.slug === "parallax" ? (
                   <ParallaxCardFront isFlipped={isFlipped} project={project} />
+                ) : project.slug === "multi-armed-bandits" ? (
+                  <BanditCardFront isFlipped={isFlipped} project={project} />
                 ) : (
                   <div aria-hidden={isFlipped} className="explorer-card-face explorer-card-front">
                     <h3>{project.slug === "multi-armed-bandits" ? "Sequential Decision-Making with Multi-Armed Bandits" : project.title}</h3>
@@ -340,6 +386,11 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
 
                 {project.slug === "parallax" ? (
                   <ParallaxCardBack
+                    isFlipped={isFlipped}
+                    onExplore={(trigger) => openProject(project, trigger)}
+                  />
+                ) : project.slug === "multi-armed-bandits" ? (
+                  <BanditCardBack
                     isFlipped={isFlipped}
                     onExplore={(trigger) => openProject(project, trigger)}
                   />
@@ -386,6 +437,8 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
             <button aria-label="Close project details" className="explorer-dialog-close" onClick={closeProject} ref={closeButtonRef} type="button">Close <span aria-hidden="true">×</span></button>
             {activeProject.slug === "parallax" ? (
               <ParallaxProjectDetail onEnlargePlot={() => setPlotOpen(true)} />
+            ) : activeProject.slug === "multi-armed-bandits" ? (
+              <BanditProjectDetail />
             ) : (
               <ProjectDetail project={activeProject} />
             )}
