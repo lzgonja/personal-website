@@ -7,7 +7,6 @@ export function SiteFooter() {
         <Link className="footer-mark" href="/" scroll>LZ<span>.</span></Link>
         <nav aria-label="Footer navigation">
           <Link href="/projects" scroll>Projects</Link>
-          <Link href="/beyond-code" scroll>Beyond Code</Link>
           <Link href="/contact" scroll>Contact</Link>
         </nav>
         <div className="footer-bottom">

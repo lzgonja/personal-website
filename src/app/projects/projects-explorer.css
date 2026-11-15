@@ -67,8 +67,10 @@
   overflow: visible;
   pointer-events: none;
 }
+.forest-projects .mobile-constellation-trails { display: none; }
 
-.forest-projects .constellation-trails path {
+.forest-projects .constellation-trails path,
+.forest-projects .mobile-constellation-trails path {
   fill: none;
   stroke: rgb(191 215 170 / 76%);
   stroke-dasharray: 8 8;
@@ -237,36 +239,39 @@
 .forest-projects .constellation-result img { display: block; width: 100%; height: auto; }
 
 @media (max-width: 840px) {
-  .forest-projects { background-position: center, 58% 82%; background-size: cover, auto 128%; }
-  .forest-projects .forest-explorer { padding: 34px 24px 48px; }
-  .forest-projects .project-constellation { display: grid; height: auto; gap: 48px; min-height: 0; max-height: none; padding: 0; }
-  .forest-projects .constellation-centre { position: relative; inset: auto; width: 100%; margin-bottom: 12px; transform: none; }
-  .forest-projects .constellation-trails { left: 42px; width: 2px; height: calc(100% - 80px); border-left: 2px dashed rgb(191 215 170 / 76%); }
-  .forest-projects .constellation-trails path { display: none; }
+  .forest-projects { background-position: center, center 70%; background-size: cover, auto 115%; }
+  .forest-projects .forest-explorer { padding: 30px 24px 46px; overflow-x: clip; }
+  .forest-projects .project-constellation { display: grid; height: auto; gap: 54px; min-height: 0; max-height: none; padding: 0; overflow: clip; }
+  .forest-projects .constellation-centre { position: relative; z-index: 2; inset: auto; order: 0; width: 100%; margin-bottom: 16px; transform: none; }
+  .forest-projects .constellation-centre h1 { font-size: clamp(1.65rem, 8vw, 2.4rem); white-space: nowrap; }
+  .forest-projects .constellation-centre p { margin-top: 10px; font-size: clamp(0.72rem, 3.2vw, 0.9rem); }
+  .forest-projects .constellation-trails { display: none; }
+  .forest-projects .mobile-constellation-trails { position: absolute; z-index: 0; inset: 0; display: block; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
   .forest-projects .constellation-item,
   .forest-projects .constellation-item-parallax,
   .forest-projects .constellation-item-multi-armed-bandits,
   .forest-projects .constellation-item-ekgram,
   .forest-projects .constellation-item-shortest-path-algorithms,
-  .forest-projects .constellation-item-polyglot { position: relative; inset: auto; width: min(100%, 430px); }
-  .forest-projects .constellation-item-multi-armed-bandits,
-  .forest-projects .constellation-item-shortest-path-algorithms { justify-self: end; }
-  .forest-projects .constellation-item-polyglot { justify-self: center; transform: none; }
-  .forest-projects .constellation-node { grid-template-columns: 125px minmax(0, 1fr); align-items: center; }
+  .forest-projects .constellation-item-polyglot { position: relative; inset: auto; width: min(58vw, 220px); transform: none; }
+  .forest-projects .constellation-item-ekgram { order: 1; justify-self: start; }
+  .forest-projects .constellation-item-parallax { order: 2; justify-self: end; }
+  .forest-projects .constellation-item-polyglot { order: 3; justify-self: start; }
+  .forest-projects .constellation-item-multi-armed-bandits { order: 4; justify-self: end; transform: translateY(-36px); }
+  .forest-projects .constellation-item-shortest-path-algorithms { order: 5; justify-self: start; }
+  .forest-projects .constellation-node { grid-template-columns: 1fr; align-items: start; }
   .forest-projects .constellation-illustration,
-  .forest-projects .constellation-item-polyglot .constellation-illustration { width: 120px; height: 84px; margin: 0; }
-  .forest-projects .constellation-label { margin: 0 0 0 24px; text-align: center; }
-  .forest-projects .constellation-panel { position: fixed; inset: auto 16px 16px !important; width: auto; max-height: min(72svh, 620px); }
+  .forest-projects .constellation-item-polyglot .constellation-illustration { width: min(46vw, 170px); height: 90px; margin-inline: auto; }
+  .forest-projects .constellation-label { margin: 12px 0 0; text-align: center; }
+  .forest-projects .constellation-panel { position: fixed; inset: auto 16px 16px !important; width: auto; max-height: calc(100svh - 32px); overscroll-behavior: contain; }
+  .forest-projects .constellation-panel-close { width: 44px; min-width: 44px; height: 44px; min-height: 44px; }
 }
 
 @media (max-width: 480px) {
-  .forest-projects .constellation-centre h1 { font-size: clamp(2.15rem, 11vw, 3.2rem); }
   .forest-projects .forest-explorer { padding-inline: 18px; }
-  .forest-projects .project-constellation { gap: 42px; }
-  .forest-projects .constellation-node { grid-template-columns: 104px minmax(0, 1fr); }
+  .forest-projects .project-constellation { gap: 48px; }
   .forest-projects .constellation-illustration,
-  .forest-projects .constellation-item-polyglot .constellation-illustration { width: 98px; height: 70px; }
-  .forest-projects .constellation-label { margin-left: 18px; font-size: 1.16rem; }
+  .forest-projects .constellation-item-polyglot .constellation-illustration { width: min(48vw, 154px); height: 82px; }
+  .forest-projects .constellation-label { margin-top: 12px; font-size: 1.1rem; }
   .forest-projects .constellation-panel { padding: 18px; }
 }
 
@@ -275,5 +280,6 @@
   .forest-projects .constellation-illustration,
   .forest-projects .constellation-illustration *,
   .forest-projects .constellation-trails path,
+  .forest-projects .mobile-constellation-trails path,
   .forest-projects .constellation-status span { animation: none !important; transition: none !important; }
 }

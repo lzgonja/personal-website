@@ -37,6 +37,7 @@ const repositoryUrls: Record<string, string> = {
 
 type TrailGeometry = {
   height: number;
+  mobilePaths: Record<string, string>;
   paths: Record<string, string>;
   width: number;
 };
@@ -181,7 +182,7 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
         const illustrationRects = Object.fromEntries(
           projectOrder.map((slug) => [slug, illustrationRefs.current[slug]?.getBoundingClientRect()]),
         );
-        if (Object.values(illustrationRects).some((rect) => !rect)) return;
+        if (Object.values(illustrationRects).some((rect) => !rect) || projectOrder.some((slug) => !triggerRefs.current[slug])) return;
 
         const local = (rect: DOMRect) => ({
           bottom: rect.bottom - containerRect.top,
@@ -255,9 +256,68 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
         const polyglotC3 = offsetPoint(lowerCentre, polyglotEnd, 0.7, -5);
         const polyglotC4 = offsetPoint(lowerCentre, polyglotEnd, 0.9, -3);
 
+        const nodeBounds = (slug: string) => local(triggerRefs.current[slug]?.getBoundingClientRect() as DOMRect);
+        const ekgramNode = nodeBounds("ekgram");
+        const parallaxNode = nodeBounds("parallax");
+        const polyglotNode = nodeBounds("polyglot");
+        const banditsNode = nodeBounds("multi-armed-bandits");
+        const mobileStarts = {
+          ekgram: { x: hub.centreX, y: hub.bottom + 12 },
+          parallax: { x: ekgramNode.centreX, y: ekgramNode.bottom + 10 },
+          polyglot: { x: parallaxNode.centreX, y: parallaxNode.bottom + 10 },
+          bandits: { x: polyglotNode.centreX, y: polyglotNode.bottom + 10 },
+          shortest: { x: banditsNode.centreX, y: banditsNode.bottom + 10 },
+        };
+        const mobileEnds = {
+          ekgram: { x: ekgram.centreX, y: ekgram.top - 10 },
+          parallax: { x: parallax.centreX, y: parallax.top - 10 },
+          polyglot: { x: polyglot.centreX, y: polyglot.top - 10 },
+          bandits: { x: bandits.centreX, y: bandits.top - 10 },
+          shortest: { x: shortest.centreX, y: shortest.top - 10 },
+        };
+
+        const mobileEkC1 = offsetPoint(mobileStarts.ekgram, mobileEnds.ekgram, 0.16, -22);
+        const mobileEkC2 = offsetPoint(mobileStarts.ekgram, mobileEnds.ekgram, 0.35, -28);
+        const mobileEkMid = offsetPoint(mobileStarts.ekgram, mobileEnds.ekgram, 0.52, 0);
+        const mobileEkC3 = offsetPoint(mobileStarts.ekgram, mobileEnds.ekgram, 0.7, 25);
+        const mobileEkC4 = offsetPoint(mobileStarts.ekgram, mobileEnds.ekgram, 0.88, 17);
+
+        const mobileParallaxC1 = offsetPoint(mobileStarts.parallax, mobileEnds.parallax, 0.12, 48);
+        const mobileParallaxC2 = offsetPoint(mobileStarts.parallax, mobileEnds.parallax, 0.34, 56);
+        const mobileParallaxMid = offsetPoint(mobileStarts.parallax, mobileEnds.parallax, 0.58, 10);
+        const mobileParallaxC3 = offsetPoint(mobileStarts.parallax, mobileEnds.parallax, 0.77, -21);
+        const mobileParallaxC4 = offsetPoint(mobileStarts.parallax, mobileEnds.parallax, 0.92, -11);
+
+        const mobilePolyC1 = offsetPoint(mobileStarts.polyglot, mobileEnds.polyglot, 0.2, -30);
+        const mobilePolyC2 = offsetPoint(mobileStarts.polyglot, mobileEnds.polyglot, 0.4, -38);
+        const mobilePolyMid = offsetPoint(mobileStarts.polyglot, mobileEnds.polyglot, 0.54, -4);
+        const mobilePolyC3 = offsetPoint(mobileStarts.polyglot, mobileEnds.polyglot, 0.72, 23);
+        const mobilePolyC4 = offsetPoint(mobileStarts.polyglot, mobileEnds.polyglot, 0.9, 13);
+
+        const mobileBanditsC1 = offsetPoint(mobileStarts.bandits, mobileEnds.bandits, 0.15, 25);
+        const mobileBanditsC2 = offsetPoint(mobileStarts.bandits, mobileEnds.bandits, 0.37, 36);
+        const mobileBanditsMid = offsetPoint(mobileStarts.bandits, mobileEnds.bandits, 0.58, 5);
+        const mobileBanditsC3 = offsetPoint(mobileStarts.bandits, mobileEnds.bandits, 0.76, -31);
+        const mobileBanditsC4 = offsetPoint(mobileStarts.bandits, mobileEnds.bandits, 0.92, -20);
+
+        const mobileShortestDeltaX = mobileEnds.shortest.x - mobileStarts.shortest.x;
+        const mobileShortestDeltaY = mobileEnds.shortest.y - mobileStarts.shortest.y;
+        const mobileShortestC1 = { x: mobileStarts.shortest.x + mobileShortestDeltaX * 0.16, y: mobileStarts.shortest.y + mobileShortestDeltaY * 0.25 };
+        const mobileShortestC2 = offsetPoint(mobileStarts.shortest, mobileEnds.shortest, 0.38, -38);
+        const mobileShortestMid = offsetPoint(mobileStarts.shortest, mobileEnds.shortest, 0.57, -12);
+        const mobileShortestC3 = offsetPoint(mobileStarts.shortest, mobileEnds.shortest, 0.75, 34);
+        const mobileShortestC4 = offsetPoint(mobileStarts.shortest, mobileEnds.shortest, 0.92, 14);
+
         setTrailGeometry({
           width: containerRect.width,
           height: containerRect.height,
+          mobilePaths: {
+            ekgram: `M${mobileStarts.ekgram.x} ${mobileStarts.ekgram.y}C${mobileEkC1.x} ${mobileEkC1.y} ${mobileEkC2.x} ${mobileEkC2.y} ${mobileEkMid.x} ${mobileEkMid.y}C${mobileEkC3.x} ${mobileEkC3.y} ${mobileEkC4.x} ${mobileEkC4.y} ${mobileEnds.ekgram.x} ${mobileEnds.ekgram.y}`,
+            parallax: `M${mobileStarts.parallax.x} ${mobileStarts.parallax.y}C${mobileParallaxC1.x} ${mobileParallaxC1.y} ${mobileParallaxC2.x} ${mobileParallaxC2.y} ${mobileParallaxMid.x} ${mobileParallaxMid.y}C${mobileParallaxC3.x} ${mobileParallaxC3.y} ${mobileParallaxC4.x} ${mobileParallaxC4.y} ${mobileEnds.parallax.x} ${mobileEnds.parallax.y}`,
+            polyglot: `M${mobileStarts.polyglot.x} ${mobileStarts.polyglot.y}C${mobilePolyC1.x} ${mobilePolyC1.y} ${mobilePolyC2.x} ${mobilePolyC2.y} ${mobilePolyMid.x} ${mobilePolyMid.y}C${mobilePolyC3.x} ${mobilePolyC3.y} ${mobilePolyC4.x} ${mobilePolyC4.y} ${mobileEnds.polyglot.x} ${mobileEnds.polyglot.y}`,
+            "multi-armed-bandits": `M${mobileStarts.bandits.x} ${mobileStarts.bandits.y}C${mobileBanditsC1.x} ${mobileBanditsC1.y} ${mobileBanditsC2.x} ${mobileBanditsC2.y} ${mobileBanditsMid.x} ${mobileBanditsMid.y}C${mobileBanditsC3.x} ${mobileBanditsC3.y} ${mobileBanditsC4.x} ${mobileBanditsC4.y} ${mobileEnds.bandits.x} ${mobileEnds.bandits.y}`,
+            "shortest-path-algorithms": `M${mobileStarts.shortest.x} ${mobileStarts.shortest.y}C${mobileShortestC1.x} ${mobileShortestC1.y} ${mobileShortestC2.x} ${mobileShortestC2.y} ${mobileShortestMid.x} ${mobileShortestMid.y}C${mobileShortestC3.x} ${mobileShortestC3.y} ${mobileShortestC4.x} ${mobileShortestC4.y} ${mobileEnds.shortest.x} ${mobileEnds.shortest.y}`,
+          },
           paths: {
             parallax: `M${upperLeft.x} ${upperLeft.y}C${parallaxC1.x} ${parallaxC1.y} ${parallaxC2.x} ${parallaxC2.y} ${parallaxMid.x} ${parallaxMid.y}C${parallaxC3.x} ${parallaxC3.y} ${parallaxC4.x} ${parallaxC4.y} ${parallaxEnd.x} ${parallaxEnd.y}`,
             "multi-armed-bandits": `M${upperRight.x} ${upperRight.y}C${banditsC1.x} ${banditsC1.y} ${banditsC2.x} ${banditsC2.y} ${banditsMid.x} ${banditsMid.y}C${banditsC3.x} ${banditsC3.y} ${banditsC4.x} ${banditsC4.y} ${banditsEnd.x} ${banditsEnd.y}`,
@@ -303,6 +363,13 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
         <path className="trail trail-ekgram" d={trailGeometry?.paths.ekgram} />
         <path className="trail trail-shortest-path-algorithms" d={trailGeometry?.paths["shortest-path-algorithms"]} />
         <path className="trail trail-polyglot" d={trailGeometry?.paths.polyglot} />
+      </svg>
+      <svg aria-hidden="true" className="mobile-constellation-trails" preserveAspectRatio="none" viewBox={`0 0 ${trailGeometry?.width ?? 1} ${trailGeometry?.height ?? 1}`}>
+        <path className="trail trail-ekgram" d={trailGeometry?.mobilePaths.ekgram} />
+        <path className="trail trail-parallax" d={trailGeometry?.mobilePaths.parallax} />
+        <path className="trail trail-polyglot" d={trailGeometry?.mobilePaths.polyglot} />
+        <path className="trail trail-multi-armed-bandits" d={trailGeometry?.mobilePaths["multi-armed-bandits"]} />
+        <path className="trail trail-shortest-path-algorithms" d={trailGeometry?.mobilePaths["shortest-path-algorithms"]} />
       </svg>
 
       {orderedProjects.map((project) => {

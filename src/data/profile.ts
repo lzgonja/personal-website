@@ -54,9 +54,7 @@ export const education = [
 export const technologyGroups = [
   { label: "Languages", technologies: ["Python", "C/C++", "Java", "JavaScript/TypeScript", "SQL", "R", "Bash"] },
   { label: "ML & Scientific Computing", technologies: ["PyTorch", "scikit-learn", "OpenCV", "NumPy", "Pandas", "SciPy"] },
-  { label: "Web Development", technologies: ["React", "Next.js", "Node.js"] },
-  { label: "Databases & Systems", technologies: ["SQLite", "Linux/Unix"] },
-  { label: "Developer Tools", technologies: ["Git", "pytest"] },
+  { label: "Tools & Frameworks", technologies: ["React", "Next.js", "Node.js", "SQLite", "Linux/Unix", "Git", "pytest"] },
 ];
 
 export const experience = [
