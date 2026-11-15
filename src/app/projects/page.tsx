@@ -14,11 +14,8 @@ export default function ProjectsPage() {
       <header className="forest-hero">
         <div className="forest-hero-overlay" aria-hidden="true" />
         <div className="forest-hero-content page-shell">
-          <h1>Things I&apos;ve built.</h1>
-          <p className="forest-hero-instruction">
-            <span className="forest-instruction-click">Click a card to flip it and explore what&apos;s behind the build.</span>
-            <span className="forest-instruction-tap">Tap a card to flip it and explore what&apos;s behind the build.</span>
-          </p>
+          <h1>Things I’ve built.</h1>
+          <p>Select a project to explore.</p>
         </div>
       </header>
 

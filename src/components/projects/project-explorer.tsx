@@ -1,458 +1,171 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 import type { Project } from "@/data/projects";
 
-import { TrajectoryVisualization } from "./trajectory-visualization";
+const projectOrder = ["parallax", "multi-armed-bandits", "ekgram", "shortest-path-algorithms", "polyglot"];
 
-const projectOrder = [
-  "parallax",
-  "multi-armed-bandits",
-  "ekgram",
-  "shortest-path-algorithms",
-  "virtual-memory-simulator",
-  "polyglot",
-];
+const descriptions: Record<string, string> = {
+  parallax: "A monocular visual odometry system that estimates vehicle trajectories from a single camera and reduces drift using temporal rotation correction.",
+  "multi-armed-bandits": "Implemented Explore-Then-Commit (ETC) and Upper Confidence Bound (UCB) algorithms to compare exploration and exploitation strategies in sequential decision-making.",
+};
 
-const parallaxSteps = [
-  ["Step 1 — Feature detection and matching", "Detect ORB features in consecutive camera frames and match corresponding points to identify visual changes."],
-  ["Step 2 — Motion estimation", "Use RANSAC-based geometry and pose recovery to estimate relative camera motion and reconstruct a trajectory."],
-  ["Step 3 — Scale ambiguity", "Fit a global scale factor using KITTI ground-truth positions to evaluate the estimated trajectory in metres."],
-  ["Step 4 — Temporal rotation correction", "Identify inconsistent rotation estimates using neighbouring frames and correct them to reduce accumulated trajectory drift."],
-] as const;
+const displayTitles: Record<string, string> = {
+  "shortest-path-algorithms": "Shortest-Path Algorithms",
+};
 
-const parallaxDescription =
-  "A monocular visual odometry system that estimates a vehicle's trajectory from a single camera and improves it with temporal rotation correction.";
+const findings: Record<string, string> = {
+  parallax: "Reduced final accumulated orientation error by 69.3% over the first 1,000 KITTI frames.",
+  "multi-armed-bandits": "UCB generally accumulated less regret than ETC at longer decision horizons.",
+};
 
-const banditDescription =
-  "Implemented and compared Explore-Then-Commit (ETC) and Upper Confidence Bound (UCB) algorithms to investigate the trade-off between exploration and exploitation in sequential decision-making.";
+const repositoryUrls: Record<string, string> = {
+  parallax: "https://github.com/lanazgonjanin/parallax",
+};
 
-const banditSteps = [
-  ["Step 1 — Model the decision problem", "Simulate multiple arms with different reward distributions to represent choices with uncertain outcomes."],
-  ["Step 2 — ETC", "Explore each arm for a fixed number of rounds, then commit to the arm with the highest estimated reward."],
-  ["Step 3 — UCB", "Select arms using empirical rewards and confidence bounds to balance exploration and exploitation."],
-  ["Step 4 — Evaluate regret", "Compare how much expected reward each algorithm loses relative to consistently selecting the optimal arm."],
-] as const;
-
-function ProjectPreview({ project }: { project: Project }) {
-  if (project.slug === "parallax") {
+function NodeIllustration({ slug }: { slug: string }) {
+  if (slug === "parallax") {
     return (
-      <div className="explorer-preview explorer-preview-plot" aria-hidden="true">
-        <Image
-          alt=""
-          height={1554}
-          priority
-          sizes="(min-width: 900px) 40vw, 90vw"
-          src="/images/parallax-temporal-rotation-correction-1000.png"
-          unoptimized
-          width={1547}
-        />
-      </div>
+      <svg aria-hidden="true" viewBox="0 0 170 110">
+        <path className="node-static" d="M24 12v76h128M20 20l4-8 4 8M144 84l8 4-8 4" />
+        <path className="node-animated node-trajectory" d="M28 83C45 57 58 45 77 38s36-14 62-16" />
+        <g className="node-markers"><circle cx="49" cy="58" r="4"/><circle cx="78" cy="38" r="4"/><circle cx="108" cy="28" r="4"/><circle cx="139" cy="22" r="4"/></g>
+      </svg>
     );
   }
 
-  if (project.slug === "multi-armed-bandits") {
+  if (slug === "multi-armed-bandits") {
     return (
-      <div className="explorer-preview explorer-preview-bandit bandit-concept" aria-hidden="true">
-        <svg viewBox="20 20 260 190">
-          <path className="bandit-concept-grid" d="M20 42H280M20 94H280M20 146H280M74 24V192M150 24V192M226 24V192" />
-          <path className="bandit-concept-link" d="M38 181H262" />
-          {[62, 150, 238].map((x, index) => (
-            <g className={index === 1 ? "bandit-arm-concept is-selected" : "bandit-arm-concept"} key={x}>
-              <rect height="78" width="46" x={x - 23} y="91" />
-              <path d={`M${x} 91V55l18-18`} />
-              <circle cx={x + 22} cy="33" r="7" />
-              <circle cx={x} cy="113" r="5" />
-              <path d={`M${x - 14} 143H${x + 14}`} />
-              <text x={x} y="205">ARM 0{index + 1}</text>
-            </g>
-          ))}
-          <path className="bandit-selection-marker" d="M150 74l-7-11h14Z" />
-        </svg>
-      </div>
+      <svg aria-hidden="true" viewBox="0 0 170 110">
+        <g className="node-static"><circle cx="85" cy="15" r="7"/><circle cx="52" cy="53" r="6"/><circle cx="118" cy="53" r="6"/><circle cx="32" cy="91" r="6"/><circle cx="68" cy="91" r="6"/><circle cx="102" cy="91" r="6"/><circle cx="138" cy="91" r="6"/></g>
+        <g className="node-branches"><path d="M80 21L57 47"/><path d="M90 21l23 26"/><path d="M49 59L35 85"/><path d="M55 59l10 26"/><path d="M115 59l-10 26"/><path d="M121 59l14 26"/></g>
+      </svg>
     );
   }
 
-  if (project.slug === "ekgram") {
+  if (slug === "ekgram") {
     return (
-      <div className="explorer-preview explorer-preview-ekgram" aria-hidden="true">
-        <span>illustrative ECG signal</span>
-        <svg viewBox="0 0 360 80"><path d="M0 43h68l9-9 9 18 12-42 15 61 14-28h38l8-8 10 16 11-37 14 55 15-26h137" /></svg>
-      </div>
+      <svg aria-hidden="true" viewBox="0 0 170 110">
+        <path className="node-static" d="M10 62h21l8-12 9 32 12-67 14 86 13-50 11 11h62" />
+        <path className="node-animated node-pulse" d="M10 62h21l8-12 9 32 12-67 14 86 13-50 11 11h62" />
+      </svg>
     );
   }
 
-  if (project.slug === "shortest-path-algorithms") {
+  if (slug === "shortest-path-algorithms") {
     return (
-      <div className="explorer-preview explorer-preview-graph" aria-hidden="true">
-        <svg viewBox="0 0 300 100">
-          <path className="graph-edges" d="M34 70L92 24l64 48 55-48 55 43M92 24h119M156 72l110-5" />
-          <path className="graph-route" d="M34 70L92 24h119l55 43" />
-          <g><circle className="graph-start" cx="34" cy="70" r="8"/><circle cx="92" cy="24" r="7"/><circle cx="156" cy="72" r="7"/><circle cx="211" cy="24" r="7"/><circle className="graph-goal" cx="266" cy="67" r="8"/></g>
-          <text x="20" y="91">start</text><text x="250" y="91">goal</text>
-        </svg>
-        <span>illustrative weighted path</span>
-      </div>
+      <svg aria-hidden="true" viewBox="0 0 170 110">
+        <g className="node-static"><path d="M25 66L58 19l48 13 36 52-63 11zM58 19l21 76m27-63L25 66m117 18L79 95"/><circle cx="25" cy="66" r="7"/><circle cx="58" cy="19" r="7"/><circle cx="106" cy="32" r="7"/><circle cx="142" cy="84" r="7"/><circle cx="79" cy="95" r="7"/></g>
+        <path className="node-animated node-route" d="M25 66L58 19l48 13 36 52" />
+      </svg>
     );
   }
 
-  if (project.slug === "virtual-memory-simulator") {
-    return (
-      <div className="explorer-preview explorer-preview-memory" aria-hidden="true">
-        <span className="memory-address">virtual<br/><b>0x4A3F</b></span><i>→</i><span className="memory-box">TLB</span><i>→</i><span className="memory-box">page table</span><i>→</i><span className="memory-address">physical<br/><b>0x1C3F</b></span>
-      </div>
-    );
+  return (
+    <svg aria-hidden="true" viewBox="0 0 190 110">
+      <path className="node-static" d="M8 57h12m150 0h12" />
+      <g className="node-waveform">
+        {[18, 32, 52, 75, 94, 110, 132, 153, 126, 94, 67, 43, 26, 17].map((height, index) => (
+          <line key={index} x1={32 + index * 9} x2={32 + index * 9} y1={55 - height / 2} y2={55 + height / 2} />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+function ResultImage({ slug }: { slug: string }) {
+  if (slug === "parallax") {
+    return <Image alt="Parallax trajectory comparison over the first 1,000 KITTI frames" height={1554} src="/images/parallax-temporal-rotation-correction-1000.png" unoptimized width={1547} />;
   }
 
-  if (project.slug === "polyglot") {
-    return (
-      <div className="explorer-preview explorer-preview-polyglot" aria-hidden="true">
-        <div className="polyglot-status"><i/><span>live language session</span></div>
-        <p><small>English</small>Hello — shall we practise?</p>
-        <p><small>Français</small>Oui, commençons.</p>
-        <div className="polyglot-wave"><i/><i/><i/><i/><i/><i/><i/><i/><span>streaming audio</span></div>
-      </div>
-    );
-  }
-
-  return null;
-}
-
-function BanditCardFront({ isFlipped, project }: { isFlipped: boolean; project: Project }) {
-  return (
-    <div aria-hidden={isFlipped} className="explorer-card-face explorer-card-front bandit-card-front">
-      <div className="bandit-card-copy">
-        <h3>Multi-Armed Bandits</h3>
-        <p>{banditDescription}</p>
-        <ul aria-label={`${project.title} technologies`}>
-          {project.topics.map((topic) => <li key={topic}>{topic}</li>)}
-        </ul>
-      </div>
-      <ProjectPreview project={project} />
-    </div>
-  );
-}
-
-function BanditCardBack({
-  isFlipped,
-  onExplore,
-}: {
-  isFlipped: boolean;
-  onExplore: (trigger: HTMLButtonElement) => void;
-}) {
-  return (
-    <div aria-hidden={!isFlipped} className="explorer-card-face explorer-card-back bandit-card-back">
-      <h3>How do the algorithms compare?</h3>
-      <p>ETC explores each option before selecting one to exploit, while UCB dynamically balances exploitation and exploration using a confidence interval for each action&apos;s estimated reward.</p>
-      <div className="bandit-finding">
-        <strong>Key finding</strong>
-        <p>UCB generally accumulated less regret than ETC at longer decision horizons in the evaluated experiment.</p>
-        <span>Evaluated over 500–20,000 rounds.</span>
-      </div>
-      <button
-        className="explorer-open-button"
-        onClick={(event) => { event.stopPropagation(); onExplore(event.currentTarget); }}
-        tabIndex={isFlipped ? 0 : -1}
-        type="button"
-      >
-        Explore project <span aria-hidden="true">↗</span>
-      </button>
-    </div>
-  );
-}
-
-function BanditProjectDetail() {
-  return (
-    <div className="explorer-detail-body bandit-detail">
-      <header className="explorer-detail-intro bandit-detail-overview">
-        <h2 id="project-dialog-title">Multi-Armed Bandits</h2>
-        <p>{banditDescription}</p>
-      </header>
-      <section className="explorer-detail-section bandit-detail-pipeline" aria-labelledby="bandit-method-title">
-        <h3 id="bandit-method-title">How it works</h3>
-        <ol className="forest-pipeline-steps">
-          {banditSteps.map(([title, text]) => (
-            <li key={title}>
-              <strong>{title}</strong>
-              <p>{text}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-    </div>
-  );
-}
-
-function ParallaxCardFront({ isFlipped, project }: { isFlipped: boolean; project: Project }) {
-  return (
-    <div aria-hidden={isFlipped} className="explorer-card-face explorer-card-front parallax-card-front">
-      <div className="parallax-card-copy">
-        <h3>{project.title}</h3>
-        <p>{parallaxDescription}</p>
-        <ul aria-label={`${project.title} technologies and topics`}>
-          {project.topics.slice(0, 5).map((topic) => <li key={topic}>{topic}</li>)}
-        </ul>
-      </div>
-      <ProjectPreview project={project} />
-    </div>
-  );
-}
-
-function ParallaxCardBack({
-  isFlipped,
-  onExplore,
-}: {
-  isFlipped: boolean;
-  onExplore: (trigger: HTMLButtonElement) => void;
-}) {
-  return (
-    <div aria-hidden={!isFlipped} className="explorer-card-face explorer-card-back parallax-card-back">
-      <h3>Reducing trajectory drift</h3>
-      <div className="parallax-back-copy">
-        <p><strong>Problem</strong>Small errors in camera rotation accumulate over time, causing the reconstructed trajectory to drift away from the vehicle&apos;s actual path.</p>
-        <p><strong>Solution</strong>Developed an offline temporal rotation correction method that identifies inconsistent rotation estimates using neighbouring frames, improving the reconstructed trajectory.</p>
-      </div>
-      <div className="parallax-result">
-        <strong>69.3%</strong>
-        <span>Reduction in final accumulated orientation error over the first 1,000 frames of the KITTI driving dataset.</span>
-      </div>
-      <button
-        className="explorer-open-button"
-        onClick={(event) => { event.stopPropagation(); onExplore(event.currentTarget); }}
-        tabIndex={isFlipped ? 0 : -1}
-        type="button"
-      >
-        Explore project <span aria-hidden="true">↗</span>
-      </button>
-    </div>
-  );
-}
-
-function ParallaxProjectDetail({ onEnlargePlot }: { onEnlargePlot: () => void }) {
-  return (
-    <div className="explorer-detail-body parallax-detail">
-      <header className="explorer-detail-intro parallax-detail-overview">
-        <h2 id="project-dialog-title">Parallax</h2>
-        <p>{parallaxDescription}</p>
-        <div className="parallax-dataset-note">
-          <strong>Dataset: KITTI Visual Odometry Benchmark</strong>
-          <p>A real-world driving dataset containing camera sequences and reference vehicle trajectories, used to evaluate visual odometry algorithms.</p>
-        </div>
-      </header>
-      <section className="explorer-detail-section parallax-detail-pipeline" aria-labelledby="parallax-method-title">
-        <h3 id="parallax-method-title">How it works</h3>
-        <ol className="forest-pipeline-steps">
-          {parallaxSteps.map(([title, text]) => (
-            <li key={title}>
-              <strong>{title}</strong>
-              <p>{text}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-      <TrajectoryVisualization onEnlarge={onEnlargePlot} />
-    </div>
-  );
-}
-
-function ProjectDetail({ project }: { project: Project }) {
-  return (
-    <div className="explorer-detail-body">
-      <header className="explorer-detail-intro">
-        <h2 id="project-dialog-title">{project.title}</h2>
-        <p>{project.subtitle}</p>
-      </header>
-
-      <div className="explorer-detail-summary">
-        <p>{project.summary}</p>
-        <ul className="forest-tag-list" aria-label={`${project.title} technologies and topics`}>
-          {project.topics.map((topic) => <li key={topic}>{topic}</li>)}
-        </ul>
-      </div>
-
-      <section className="explorer-detail-section" aria-labelledby="technical-focus-title">
-        <h3 id="technical-focus-title">Technical focus</h3>
-        <ProjectPreview project={project} />
-        <ul className="explorer-highlight-list">
-          {project.highlights.map((highlight) => <li key={highlight}><span>{highlight}</span></li>)}
-        </ul>
-        <p className="explorer-detail-note">Additional implementation details and verified project outputs can be added here as they become available.</p>
-      </section>
-    </div>
-  );
+  return <Image alt="Cumulative regret comparison between ETC and UCB over 500 to 20,000 rounds" height={701} src="/images/bandits-regret-comparison.png" unoptimized width={1160} />;
 }
 
 export function ProjectExplorer({ projects }: { projects: Project[] }) {
-  const orderedProjects = useMemo(
-    () => [...projects].sort((a, b) => projectOrder.indexOf(a.slug) - projectOrder.indexOf(b.slug)),
-    [projects],
-  );
-  const [flipped, setFlipped] = useState<Set<string>>(new Set());
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [plotOpen, setPlotOpen] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const lightboxCloseRef = useRef<HTMLButtonElement>(null);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const orderedProjects = projectOrder
+    .map((slug) => projects.find((project) => project.slug === slug))
+    .filter((project): project is Project => Boolean(project));
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const [resultsSlug, setResultsSlug] = useState<string | null>(null);
+  const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   useEffect(() => {
-    if (!activeProject) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
-
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        if (plotOpen) setPlotOpen(false);
-        else setActiveProject(null);
-        return;
-      }
-      if (event.key !== "Tab" || !dialogRef.current) return;
-      const focusScope = plotOpen
-        ? dialogRef.current.querySelector<HTMLElement>(".trajectory-lightbox")
-        : dialogRef.current.querySelector<HTMLElement>(".explorer-dialog-panel");
-      if (!focusScope) return;
-      const focusable = Array.from(focusScope.querySelectorAll<HTMLElement>(
-        "button:not([disabled]), a[href], select:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex='-1'])",
-      )).filter((element) => element.offsetParent !== null);
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      if (event.key !== "Escape" || !selectedSlug) return;
+      const previousSlug = selectedSlug;
+      setSelectedSlug(null);
+      setResultsSlug(null);
+      window.requestAnimationFrame(() => triggerRefs.current[previousSlug]?.focus());
     };
-
     document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [activeProject, plotOpen]);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [selectedSlug]);
 
-  useEffect(() => {
-    if (!activeProject) triggerRef.current?.focus();
-  }, [activeProject]);
-
-  useEffect(() => {
-    if (plotOpen) window.requestAnimationFrame(() => lightboxCloseRef.current?.focus());
-  }, [plotOpen]);
-
-  const toggleCard = (slug: string) => {
-    setFlipped((current) => {
-      const next = new Set(current);
-      if (next.has(slug)) next.delete(slug);
-      else next.add(slug);
-      return next;
-    });
-  };
-
-  const openProject = (project: Project, trigger: HTMLButtonElement) => {
-    triggerRef.current = trigger;
-    setActiveProject(project);
-  };
-
-  const closeProject = () => {
-    setPlotOpen(false);
-    setActiveProject(null);
+  const closePanel = () => {
+    setSelectedSlug(null);
+    setResultsSlug(null);
   };
 
   return (
-    <>
-      <div className="explorer-grid">
-        {orderedProjects.map((project) => {
-          const isFlipped = flipped.has(project.slug);
-          const featuredClass = project.slug === "parallax"
-            ? "explorer-card-parallax"
-            : project.slug === "multi-armed-bandits" ? "explorer-card-bandits" : "";
-          return (
-            <article className={`explorer-card explorer-card-${project.slug} ${featuredClass} ${isFlipped ? "is-flipped" : ""}`} id={project.slug} key={project.slug}>
-              <div className={`explorer-card-inner ${isFlipped ? "is-flipped" : ""}`}>
-                {project.slug === "parallax" ? (
-                  <ParallaxCardFront isFlipped={isFlipped} project={project} />
-                ) : project.slug === "multi-armed-bandits" ? (
-                  <BanditCardFront isFlipped={isFlipped} project={project} />
-                ) : (
-                  <div aria-hidden={isFlipped} className="explorer-card-face explorer-card-front">
-                    <h3>{project.slug === "multi-armed-bandits" ? "Sequential Decision-Making with Multi-Armed Bandits" : project.title}</h3>
-                    <p>{project.summary}</p>
-                    <ProjectPreview project={project} />
-                    <ul aria-label={`${project.title} technologies and topics`}>
-                      {project.topics.slice(0, 5).map((topic) => <li key={topic}>{topic}</li>)}
-                    </ul>
-                  </div>
-                )}
+    <div className="project-constellation" onClick={closePanel}>
+      <svg aria-hidden="true" className="constellation-trails" preserveAspectRatio="none" viewBox="0 0 1200 620">
+        <path d="M155 144C260 170 208 292 342 297S510 212 632 165S800 160 918 110" />
+        <path d="M150 328C265 290 350 390 467 385S575 302 672 326S835 392 928 466" />
+        <path d="M285 517C440 470 508 565 680 535S810 465 965 486" />
+      </svg>
 
-                {project.slug === "parallax" ? (
-                  <ParallaxCardBack
-                    isFlipped={isFlipped}
-                    onExplore={(trigger) => openProject(project, trigger)}
-                  />
-                ) : project.slug === "multi-armed-bandits" ? (
-                  <BanditCardBack
-                    isFlipped={isFlipped}
-                    onExplore={(trigger) => openProject(project, trigger)}
-                  />
-                ) : (
-                  <div aria-hidden={!isFlipped} className="explorer-card-face explorer-card-back">
-                    <h3>{project.title}</h3>
-                    <p>{project.slug === "multi-armed-bandits" ? banditDescription : project.summary}</p>
-                    <ul className="explorer-card-highlights">
-                      {project.highlights.slice(0, 2).map((highlight) => <li key={highlight}>{highlight}</li>)}
-                    </ul>
-                    <button
-                      className="explorer-open-button"
-                      onClick={(event) => { event.stopPropagation(); openProject(project, event.currentTarget); }}
-                      tabIndex={isFlipped ? 0 : -1}
-                      type="button"
-                    >
-                      Explore project <span aria-hidden="true">↗</span>
+      {orderedProjects.map((project) => {
+        const title = displayTitles[project.slug] ?? project.title;
+        const isSelected = selectedSlug === project.slug;
+        const hasResults = project.slug === "parallax" || project.slug === "multi-armed-bandits";
+
+        return (
+          <div className={`constellation-item constellation-item-${project.slug} ${isSelected ? "is-selected" : ""}`} key={project.slug}>
+            <button
+              aria-expanded={isSelected}
+              aria-label={`${isSelected ? "Close" : "Open"} details for ${title}`}
+              className="constellation-node"
+              onClick={(event) => {
+                event.stopPropagation();
+                setSelectedSlug((current) => current === project.slug ? null : project.slug);
+                setResultsSlug(null);
+              }}
+              ref={(element) => { triggerRefs.current[project.slug] = element; }}
+              type="button"
+            >
+              <span className="constellation-illustration"><NodeIllustration slug={project.slug} /></span>
+              <span className="constellation-label"><i aria-hidden="true" />{title}</span>
+            </button>
+
+            {isSelected && (
+              <aside className="constellation-panel" onClick={(event) => event.stopPropagation()}>
+                <button aria-label={`Close ${title} details`} className="constellation-panel-close" onClick={closePanel} type="button">×</button>
+                <h2>{title}</h2>
+                <p>{descriptions[project.slug] ?? project.summary}</p>
+                <ul aria-label={`${title} technologies`}>
+                  {project.topics.map((topic) => <li key={topic}>{topic}</li>)}
+                </ul>
+                {findings[project.slug] && <p className="constellation-finding">{findings[project.slug]}</p>}
+                <div className="constellation-panel-actions">
+                  {hasResults && (
+                    <button aria-expanded={resultsSlug === project.slug} onClick={() => setResultsSlug((current) => current === project.slug ? null : project.slug)} type="button">
+                      {resultsSlug === project.slug ? "Hide results" : "View results"}
                     </button>
-                  </div>
+                  )}
+                  {repositoryUrls[project.slug] && (
+                    <a href={repositoryUrls[project.slug]} rel="noreferrer" target="_blank">GitHub <span aria-hidden="true">↗</span></a>
+                  )}
+                </div>
+                {resultsSlug === project.slug && (
+                  <figure className="constellation-result"><ResultImage slug={project.slug} /></figure>
                 )}
-              </div>
-              <button
-                aria-label={`${isFlipped ? "Show front of" : "Flip"} ${project.title} card`}
-                aria-pressed={isFlipped}
-                className="explorer-card-flip-trigger"
-                onClick={() => toggleCard(project.slug)}
-                type="button"
-              />
-            </article>
-          );
-        })}
-      </div>
-
-      {activeProject && (
-        <div
-          aria-labelledby="project-dialog-title"
-          aria-modal="true"
-          className="explorer-dialog-backdrop"
-          onMouseDown={(event) => { if (event.target === event.currentTarget) closeProject(); }}
-          ref={dialogRef}
-          role="dialog"
-        >
-          <div className="explorer-dialog-panel">
-            <button aria-label="Close project details" className="explorer-dialog-close" onClick={closeProject} ref={closeButtonRef} type="button">Close <span aria-hidden="true">×</span></button>
-            {activeProject.slug === "parallax" ? (
-              <ParallaxProjectDetail onEnlargePlot={() => setPlotOpen(true)} />
-            ) : activeProject.slug === "multi-armed-bandits" ? (
-              <BanditProjectDetail />
-            ) : (
-              <ProjectDetail project={activeProject} />
+              </aside>
             )}
           </div>
-
-          {plotOpen && (
-            <div aria-label="Enlarged original Parallax trajectory plot" aria-modal="true" className="trajectory-lightbox" role="dialog">
-              <button aria-label="Close enlarged plot" onClick={() => setPlotOpen(false)} ref={lightboxCloseRef} type="button">Close <span aria-hidden="true">×</span></button>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="Original Parallax trajectory comparison plot" src="/images/parallax-temporal-rotation-correction-1000.png" />
-            </div>
-          )}
-        </div>
-      )}
-    </>
+        );
+      })}
+    </div>
   );
 }
