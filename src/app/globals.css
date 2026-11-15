@@ -615,13 +615,13 @@ svg { display: block; }
 .technology-group ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .technology-group li { padding: 3px 7px; border: 1px solid rgb(196 183 210 / 30%); border-radius: 3px; background: rgb(163 178 212 / 9%); color: #f2f0f5; font: 500 0.72rem/1.35 var(--font-mono); }
 
-.experience-profile-section { position: relative; isolation: isolate; overflow: hidden; background: var(--home-deep); color: var(--home-snow); }
+.experience-profile-section { position: relative; isolation: isolate; overflow: hidden; padding-top: clamp(32px, 3vw, 40px); padding-bottom: calc(clamp(32px, 3vw, 40px) + 50px); background: var(--home-deep); color: var(--home-snow); }
 .experience-background-image { z-index: 0; object-fit: cover; object-position: center 52%; }
 .experience-overlay { position: absolute; z-index: 1; inset: 0; background: rgb(32 50 78 / 70%); }
 .experience-content { position: relative; z-index: 2; }
 .experience-profile-section .profile-section-heading { margin-bottom: 22px; }
 .experience-profile-section .profile-section-heading h2 { color: var(--home-snow); }
-.experience-selector { display: grid; grid-template-columns: minmax(210px, 0.72fr) minmax(0, 2fr); gap: clamp(32px, 6vw, 88px); min-height: 600px; border-top: 1px solid rgb(242 240 245 / 34%); border-bottom: 1px solid rgb(242 240 245 / 34%); }
+.experience-selector { display: grid; grid-template-columns: minmax(210px, 0.72fr) minmax(0, 2fr); gap: clamp(32px, 6vw, 88px); border-top: 1px solid rgb(242 240 245 / 34%); border-bottom: 1px solid rgb(242 240 245 / 34%); }
 .experience-tabs { display: grid; align-content: start; padding: 20px 0; }
 .experience-tab { position: relative; display: grid; gap: 4px; width: 100%; padding: 17px 18px 17px 22px; border: 0; background: transparent; color: rgb(225 227 239 / 66%); font: inherit; text-align: left; cursor: pointer; transition: background var(--duration-fast), color var(--duration-fast), opacity var(--duration-fast); }
 .experience-tab::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 2px; background: transparent; transition: background var(--duration-fast); }
@@ -631,7 +631,9 @@ svg { display: block; }
 .experience-tab[aria-selected="true"] { color: var(--home-snow); background: rgb(163 178 212 / 14%); }
 .experience-tab[aria-selected="true"]::before { background: var(--home-pink); }
 .experience-tab:focus-visible { z-index: 1; outline: 2px solid #f2f0f5; outline-offset: -2px; }
-.experience-panel { padding: 28px 0 32px; animation: experience-panel-in 180ms var(--ease-standard); }
+.experience-panels { display: grid; min-width: 0; }
+.experience-panel { grid-area: 1 / 1; min-width: 0; padding: 24px 0 38px; visibility: hidden; pointer-events: none; }
+.experience-panel.is-active { visibility: visible; pointer-events: auto; animation: experience-panel-in 180ms var(--ease-standard); }
 .experience-panel:focus { outline: none; }
 .experience-panel:focus-visible { outline: 2px solid #f2f0f5; outline-offset: 5px; }
 .experience-panel h3 { margin: 0 0 7px; color: var(--home-snow); font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
@@ -800,12 +802,12 @@ svg { display: block; }
   .education-details { grid-template-columns: 1fr; gap: 20px; }
   .education-details > div:only-child { grid-column: auto; }
   .technology-panel { padding: 18px; }
-  .experience-selector { grid-template-columns: 1fr; gap: 0; min-height: 0; }
+  .experience-selector { grid-template-columns: 1fr; gap: 0; }
   .experience-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0; }
   .experience-tab { padding: 15px 12px 15px 14px; }
   .experience-tab > span:first-child { font-size: 0.82rem; }
   .experience-tab::before { inset: auto 0 0; width: auto; height: 2px; }
-  .experience-panel { min-height: 540px; padding: 24px 0 26px; }
+  .experience-panel { padding: 24px 0 38px; }
   .experience-panel h3 { font-size: clamp(1.75rem, 9vw, 2.3rem); }
   .experience-details { margin-top: 18px; }
   .experience-background-image { object-position: 58% center; }

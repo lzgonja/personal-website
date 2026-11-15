@@ -10,18 +10,8 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return (
-    <>
-      <header className="forest-hero">
-        <div className="forest-hero-overlay" aria-hidden="true" />
-        <div className="forest-hero-content page-shell">
-          <h1>Things I’ve built.</h1>
-          <p>Select a project to explore.</p>
-        </div>
-      </header>
-
-      <section className="forest-section forest-explorer page-shell" aria-label="Technical projects gallery">
-        <ProjectExplorer projects={projects} />
-      </section>
-    </>
+    <section className="forest-section forest-explorer page-shell" aria-label="Technical projects trail map">
+      <ProjectExplorer projects={projects} />
+    </section>
   );
 }

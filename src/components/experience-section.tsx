@@ -81,31 +81,40 @@ export function ExperienceSection() {
             })}
           </div>
 
-          <article
-            aria-labelledby={tabId(selectedExperience.role)}
-            className="experience-panel"
-            id={panelId(selectedExperience.role)}
-            key={selectedExperience.role}
-            role="tabpanel"
-            tabIndex={0}
-          >
-            <h3>{selectedExperience.role}</h3>
-            <p className="experience-meta">
-              <span>{selectedExperience.organization}</span>
-              <span aria-hidden="true"> · </span>
-              <span>{selectedExperience.location}</span>
-            </p>
-            <p className="experience-date">{selectedExperience.dates}</p>
-            <ul className="experience-details">
-              {selectedExperience.details.map((detail, detailIndex) => (
-                <li key={detailIndex}>
-                  {detail.map((segment, segmentIndex) => "emphasis" in segment && segment.emphasis
-                    ? <strong key={segmentIndex}>{segment.text}</strong>
-                    : <span key={segmentIndex}>{segment.text}</span>)}
-                </li>
-              ))}
-            </ul>
-          </article>
+          <div className="experience-panels">
+            {experience.map((entry) => {
+              const selected = entry.role === selectedExperience.role;
+
+              return (
+                <article
+                  aria-hidden={!selected}
+                  aria-labelledby={tabId(entry.role)}
+                  className={`experience-panel ${selected ? "is-active" : ""}`}
+                  id={panelId(entry.role)}
+                  key={entry.role}
+                  role="tabpanel"
+                  tabIndex={selected ? 0 : -1}
+                >
+                  <h3>{entry.role}</h3>
+                  <p className="experience-meta">
+                    <span>{entry.organization}</span>
+                    <span aria-hidden="true"> · </span>
+                    <span>{entry.location}</span>
+                  </p>
+                  <p className="experience-date">{entry.dates}</p>
+                  <ul className="experience-details">
+                    {entry.details.map((detail, detailIndex) => (
+                      <li key={detailIndex}>
+                        {detail.map((segment, segmentIndex) => "emphasis" in segment && segment.emphasis
+                          ? <strong key={segmentIndex}>{segment.text}</strong>
+                          : <span key={segmentIndex}>{segment.text}</span>)}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
