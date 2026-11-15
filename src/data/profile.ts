@@ -40,6 +40,7 @@ export const education = [
       "Data Structures and Algorithms",
       "Operating Systems",
       "Databases",
+      "Networks & Security",
       "Software Design",
       "Reinforcement Learning",
       "Mathematical Modelling",
@@ -53,7 +54,7 @@ export const education = [
 
 export const technologyGroups = [
   { label: "Languages", technologies: ["Python", "C/C++", "Java", "JavaScript/TypeScript", "SQL", "R", "Bash"] },
-  { label: "ML & Scientific Computing", technologies: ["PyTorch", "scikit-learn", "OpenCV", "NumPy", "Pandas", "SciPy"] },
+  { label: "ML & Scientific Computing", technologies: ["PyTorch", "scikit-learn", "OpenCV", "NumPy", "Pandas", "SciPy", "Matplotlib"] },
   { label: "Tools & Frameworks", technologies: ["React", "Next.js", "Node.js", "SQLite", "Linux/Unix", "Git", "pytest"] },
 ];
 
