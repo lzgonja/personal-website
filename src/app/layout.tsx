@@ -26,7 +26,7 @@ const newsreader = Newsreader({
 
 export const metadata: Metadata = {
   title: {
-    default: "Lana Zgonjanin — Mathematics, AI & Robotics",
+    default: "Lana Zgonjanin",
     template: "%s — Lana Zgonjanin",
   },
   description:
