@@ -30,9 +30,9 @@ const findings: Record<string, string> = {
 
 const repositoryUrls: Record<string, string> = {
   ekgram: "https://github.com/sophiamjiali/ekg-digitizer",
-  parallax: "https://github.com/lanazgonjanin/parallax",
+  parallax: "https://github.com/lzgonja/parallax",
   polyglot: "https://github.com/stanley-cao/polyglot",
-  "shortest-path-algorithms": "https://github.com/lanazgonjanin/shortest-path-algorithms",
+  "shortest-path-algorithms": "https://github.com/lzgonja/shortest-path-algorithms",
 };
 
 type TrailGeometry = {

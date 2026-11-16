@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const repositoryUrl = "https://github.com/lanazgonjanin/parallax";
+const repositoryUrl = "https://github.com/lzgonja/parallax";
 
 export function TrajectoryVisualization({ onEnlarge }: { onEnlarge?: () => void }) {
   return (
