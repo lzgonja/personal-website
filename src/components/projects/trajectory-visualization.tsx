@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { withBasePath } from "@/lib/site-path";
+
 const repositoryUrl = "https://github.com/lzgonja/parallax";
 
 export function TrajectoryVisualization({ onEnlarge }: { onEnlarge?: () => void }) {
@@ -12,7 +14,7 @@ export function TrajectoryVisualization({ onEnlarge }: { onEnlarge?: () => void 
               alt="Trajectory comparison plot showing KITTI ground truth, the original baseline, and temporal rotation correction over the first 1,000 frames"
               height={1554}
               sizes="(min-width: 900px) 58vw, 100vw"
-              src="/images/parallax-temporal-rotation-correction-1000.png"
+              src={withBasePath("/images/parallax-temporal-rotation-correction-1000.png")}
               width={1547}
             />
             <span>Enlarge plot</span>
@@ -22,7 +24,7 @@ export function TrajectoryVisualization({ onEnlarge }: { onEnlarge?: () => void 
             alt="Trajectory comparison plot showing KITTI ground truth, the original baseline, and temporal rotation correction over the first 1,000 frames"
             height={1554}
             sizes="(min-width: 900px) 58vw, 100vw"
-            src="/images/parallax-temporal-rotation-correction-1000.png"
+            src={withBasePath("/images/parallax-temporal-rotation-correction-1000.png")}
             width={1547}
           />
         )}

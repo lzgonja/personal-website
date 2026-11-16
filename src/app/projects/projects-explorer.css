@@ -7,7 +7,7 @@
   background-color: #092016;
   background-image:
     linear-gradient(rgb(8 27 19 / 34%), rgb(4 25 16 / 62%)),
-    url("/images/filip-zrnzevic-forest.jpg");
+    var(--projects-forest-image);
   background-position: center, center 88%;
   background-repeat: no-repeat;
   background-size: cover, cover;

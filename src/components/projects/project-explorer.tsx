@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { Project } from "@/data/projects";
+import { withBasePath } from "@/lib/site-path";
 
 const projectOrder = ["parallax", "multi-armed-bandits", "ekgram", "shortest-path-algorithms", "polyglot"];
 
@@ -117,10 +118,10 @@ function NodeIllustration({ slug }: { slug: string }) {
 
 function ResultImage({ slug }: { slug: string }) {
   if (slug === "parallax") {
-    return <Image alt="Parallax trajectory comparison over the first 1,000 KITTI frames" height={1554} src="/images/parallax-temporal-rotation-correction-1000.png" unoptimized width={1547} />;
+    return <Image alt="Parallax trajectory comparison over the first 1,000 KITTI frames" height={1554} src={withBasePath("/images/parallax-temporal-rotation-correction-1000.png")} unoptimized width={1547} />;
   }
 
-  return <Image alt="Cumulative regret comparison between ETC and UCB over 500 to 20,000 rounds" height={701} src="/images/bandits-regret-comparison.png" unoptimized width={1160} />;
+  return <Image alt="Cumulative regret comparison between ETC and UCB over 500 to 20,000 rounds" height={701} src={withBasePath("/images/bandits-regret-comparison.png")} unoptimized width={1160} />;
 }
 
 export function ProjectExplorer({ projects }: { projects: Project[] }) {

@@ -8,6 +8,8 @@ import { SiteHeader } from "@/components/site-header";
 
 import "./globals.css";
 
+const isCslabBuild = process.env.NEXT_PUBLIC_CSLAB_BUILD === "true";
+
 const geist = Geist({
   variable: "--font-geist",
   subsets: ["latin"],
@@ -31,6 +33,7 @@ export const metadata: Metadata = {
   },
   description:
     "Portfolio of Lana Zgonjanin, exploring mathematics, computer science, AI, computer vision, and robotics.",
+  ...(isCslabBuild ? { robots: { index: false, follow: false } } : {}),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
@@ -41,7 +44,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <SiteHeader />
         <main id="main-content">{children}</main>
         <SiteFooter />
-        <Analytics />
+        {!isCslabBuild && <Analytics />}
       </body>
     </html>
   );

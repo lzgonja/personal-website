@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:cslab": "CSLAB_BUILD=true next build --webpack",
     "start": "next start",
     "lint": "eslint ."
   },

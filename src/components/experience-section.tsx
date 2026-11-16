@@ -4,6 +4,7 @@ import Image from "next/image";
 import { type KeyboardEvent, useState } from "react";
 
 import { experience } from "@/data/profile";
+import { withBasePath } from "@/lib/site-path";
 
 const defaultRole = "Data Analyst";
 
@@ -48,7 +49,7 @@ export function ExperienceSection() {
         className="experience-background-image"
         fill
         sizes="(max-width: 639px) 280vw, 100vw"
-        src="/images/magda-ehlers-ocean-waves.jpg"
+        src={withBasePath("/images/magda-ehlers-ocean-waves.jpg")}
       />
       <div className="experience-overlay" aria-hidden="true" />
       <div className="experience-content page-shell">

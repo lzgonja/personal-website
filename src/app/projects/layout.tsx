@@ -1,5 +1,7 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+
+import { withBasePath } from "@/lib/site-path";
 
 import "./projects-explorer.css";
 
@@ -19,6 +21,7 @@ export default function ProjectsLayout({ children }: Readonly<{ children: ReactN
   return (
     <div
       className={`forest-projects ${ibmPlexSans.className} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
+      style={{ "--projects-forest-image": `url("${withBasePath("/images/filip-zrnzevic-forest.jpg")}")` } as CSSProperties}
     >
       {children}
     </div>

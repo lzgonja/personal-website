@@ -3,6 +3,7 @@ import Image from "next/image";
 import { EducationSection } from "@/components/education-section";
 import { ExperienceSection } from "@/components/experience-section";
 import { publications, technologyGroups } from "@/data/profile";
+import { withBasePath } from "@/lib/site-path";
 
 function SectionHeading({ id, title }: { id: string; title: string }) {
   return (
@@ -23,7 +24,7 @@ export default function Home() {
           fill
           priority
           sizes="(max-width: 639px) 165vw, 100vw"
-          src="/images/radomir-moysia-mountains.jpg"
+          src={withBasePath("/images/radomir-moysia-mountains.jpg")}
         />
         <div className="home-intro-content page-shell">
           <h1 id="home-heading">Hi, I&apos;m Lana.</h1>
