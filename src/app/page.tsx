@@ -22,7 +22,7 @@ export default function Home() {
           className="home-intro-image"
           fill
           priority
-          sizes="100vw"
+          sizes="(max-width: 639px) 165vw, 100vw"
           src="/images/radomir-moysia-mountains.jpg"
         />
         <div className="home-intro-content page-shell">

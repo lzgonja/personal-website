@@ -47,7 +47,7 @@ export function ExperienceSection() {
         aria-hidden="true"
         className="experience-background-image"
         fill
-        sizes="100vw"
+        sizes="(max-width: 639px) 280vw, 100vw"
         src="/images/magda-ehlers-ocean-waves.jpg"
       />
       <div className="experience-overlay" aria-hidden="true" />
