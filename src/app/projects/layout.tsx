@@ -1,7 +1,5 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
-
-import { withBasePath } from "@/lib/site-path";
 
 import "./projects-explorer.css";
 
@@ -19,10 +17,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export default function ProjectsLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <div
-      className={`forest-projects ${ibmPlexSans.className} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
-      style={{ "--projects-forest-image": `url("${withBasePath("/images/filip-zrnzevic-forest.jpg")}")` } as CSSProperties}
-    >
+    <div className={`pcb-projects ${ibmPlexSans.className} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}>
       {children}
     </div>
   );

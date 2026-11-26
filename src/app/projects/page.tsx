@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return (
-    <section className="forest-section forest-explorer page-shell" aria-label="Technical projects trail map">
+    <section className="pcb-explorer" aria-label="Engineering projects printed circuit board">
       <ProjectExplorer projects={projects} />
     </section>
   );
