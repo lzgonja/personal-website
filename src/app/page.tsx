@@ -30,8 +30,9 @@ export default function Home() {
           <h1 id="home-heading">Hi, I&apos;m Lana.</h1>
           <p className="home-introduction">
             I&apos;m a Master&apos;s student at the University of Toronto who loves building things, figuring
-            out how they work, and fixing them when they don&apos;t. My current interests include reinforcement
-            learning, robotics, control systems, and embedded software.
+            out how they work, and fixing them when they don&apos;t. I&apos;m currently interested in applying machine
+            learning, reinforcement learning, control systems, and embedded software to problems in healthcare,
+            robotics, and aerospace.
           </p>
         </div>
       </section>
@@ -62,7 +63,7 @@ export default function Home() {
       <ExperienceSection />
 
       <section className="profile-section publications-profile-section page-shell" aria-labelledby="publications-title">
-        <SectionHeading id="publications-title" title="Publications" />
+        <SectionHeading id="publications-title" title="Publications & Research Reports" />
         <div className="compact-publication-list">
           {publications.map((publication) => (
             <article className="compact-publication" key={publication.title}>
